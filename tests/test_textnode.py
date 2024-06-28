@@ -10,10 +10,8 @@ class TestTextNode(unittest.TestCase):
         self.assertEqual(node1, node2)
 
     def test_eq_url(self):
-        node1 = TextNode("These nodes have urls",
-                         "bold", "https://www.boot.dev")
-        node2 = TextNode("These nodes have urls",
-                         "bold", "https://www.boot.dev")
+        node1 = TextNode("These nodes have urls", "bold", "https://www.boot.dev")
+        node2 = TextNode("These nodes have urls", "bold", "https://www.boot.dev")
         self.assertEqual(node1, node2)
 
     def test_ne_text(self):
@@ -27,10 +25,8 @@ class TestTextNode(unittest.TestCase):
         self.assertNotEqual(node1, node2)
 
     def test_ne_url(self):
-        node1 = TextNode("These have different urls",
-                         "bold", "https://www.boot.dev")
-        node2 = TextNode("These have different urls", "bold",
-                         "https://www.codecademy.com")
+        node1 = TextNode("These have different urls", "bold", "https://www.boot.dev")
+        node2 = TextNode("These have different urls", "bold", "https://www.codecademy.com")
         self.assertNotEqual(node1, node2)
 
     def test_default_url(self):
@@ -38,13 +34,11 @@ class TestTextNode(unittest.TestCase):
         self.assertIsNone(node.url)
 
     def test_with_url(self):
-        node = TextNode("This text node has a link",
-                        "bold", "https://www.boot.dev")
+        node = TextNode("This text node has a link", "bold", "https://www.boot.dev")
         self.assertEqual(node.url, "https://www.boot.dev")
 
     def test_repr(self):
-        node = TextNode("This text node has a link",
-                        "bold", "https://www.boot.dev")
+        node = TextNode("This text node has a link", "bold", "https://www.boot.dev")
         self.assertEqual(
             repr(node),
             "TextNode(This text node has a link, bold, https://www.boot.dev)"
