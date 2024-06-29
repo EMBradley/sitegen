@@ -15,7 +15,7 @@ from inline_markdown import (
 from textnode import TextNode, TextType
 
 
-class TestConvertTextToTextNode(unittest.TestCase):
+class TestInlineMarkdown(unittest.TestCase):
     def test_convert_text(self):
         text = "This is **text** with an *italic* word and a `code block` and an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and a [link](https://boot.dev)"
         self.assertEqual(
@@ -42,8 +42,6 @@ class TestConvertTextToTextNode(unittest.TestCase):
         text = "There is nothing special about this text"
         self.assertEqual(text_to_textnodes(text), [TextNode(text, TextType.Normal)])
 
-
-class TestSplitNodeDelimiter(unittest.TestCase):
     def test_split_nodes_code(self):
         node_with_code_block = TextNode(
             "This is text with a `code block` word", TextType.Normal
@@ -94,8 +92,6 @@ class TestSplitNodeDelimiter(unittest.TestCase):
             ],
         )
 
-
-class TestSplitNodeImages(unittest.TestCase):
     def test_split_images(self):
         node = TextNode(
             "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and another ![second image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png)",
@@ -147,8 +143,6 @@ class TestSplitNodeImages(unittest.TestCase):
         )
         self.assertEqual(split_nodes_images([node]), [node])
 
-
-class TestSplitNodeLinks(unittest.TestCase):
     def test_split_links(self):
         node = TextNode(
             "This is a text node with [a link](https://www.boot.dev) and [another link](https://www.codecademy.com)",
@@ -205,8 +199,6 @@ class TestSplitNodeLinks(unittest.TestCase):
         )
         self.assertEqual(split_nodes_links([node]), [node])
 
-
-class TestExtractImages(unittest.TestCase):
     def test_extract_images(self):
         text = "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and ![another](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png)"
         self.assertEqual(
@@ -238,8 +230,6 @@ class TestExtractImages(unittest.TestCase):
             [("an image", "https://www.test.com")],
         )
 
-
-class TestExtractLinks(unittest.TestCase):
     def test_extract_links(self):
         text = "This is text with a [link](https://www.example.com) and [another](https://www.example.com/another)"
         self.assertEqual(
