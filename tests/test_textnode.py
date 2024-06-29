@@ -3,58 +3,62 @@
 # pylint: disable=missing-function-docstring
 
 import unittest
-from src.textnode import TextNode
+from src.textnode import TextNode, TextNodeType
 
 
 class TestTextNode(unittest.TestCase):
     def test_eq(self):
-        node1 = TextNode("This is a bold node", "bold")
-        node2 = TextNode("This is a bold node", "bold")
+        node1 = TextNode("This is a bold node", TextNodeType.Bold)
+        node2 = TextNode("This is a bold node", TextNodeType.Bold)
         self.assertEqual(node1, node2)
 
     def test_eq_url(self):
-        node1 = TextNode("This node has a url", "bold", "https://www.boot.dev")
-        node2 = TextNode("This node has a url", "bold", "https://www.boot.dev")
+        node1 = TextNode("This node has a url", TextNodeType.Bold, "https://www.boot.dev")
+        node2 = TextNode("This node has a url", TextNodeType.Bold, "https://www.boot.dev")
         self.assertEqual(node1, node2)
 
     def test_ne_text(self):
-        node1 = TextNode("This is a text node", "text")
-        node2 = TextNode("This is a different text node", "text")
+        node1 = TextNode("This is a text node", TextNodeType.Text)
+        node2 = TextNode("This is a different text node", TextNodeType.Text)
         self.assertNotEqual(node1, node2)
 
     def test_ne_type(self):
-        node1 = TextNode("These nodes have different styles", "text")
-        node2 = TextNode("These nodes have different styles", "bold")
+        node1 = TextNode("These nodes have different styles", TextNodeType.Text)
+        node2 = TextNode("These nodes have different styles", TextNodeType.Bold)
         self.assertNotEqual(node1, node2)
 
     def test_ne_url(self):
-        node1 = TextNode("These have different urls", "bold", "https://www.boot.dev")
-        node2 = TextNode("These have different urls", "bold", "https://www.codecademy.com")
+        node1 = TextNode("These have different urls", TextNodeType.Bold, "https://www.boot.dev")
+        node2 = TextNode(
+            "These have different urls",
+            TextNodeType.Bold,
+            "https://www.codecademy.com"
+        )
         self.assertNotEqual(node1, node2)
 
     def test_default_url(self):
-        node = TextNode("This is a text node", "bold")
+        node = TextNode("This is a text node", TextNodeType.Bold)
         self.assertIsNone(node.url)
 
     def test_with_url(self):
-        node = TextNode("This text node has a link", "bold", "https://www.boot.dev")
+        node = TextNode("This text node has a link", TextNodeType.Bold, "https://www.boot.dev")
         self.assertEqual(node.url, "https://www.boot.dev")
 
     def test_repr(self):
-        node = TextNode("This text node has a link", "bold", "https://www.boot.dev")
+        node = TextNode("This text node has a link", TextNodeType.Bold, "https://www.boot.dev")
         self.assertEqual(
             repr(node),
             "TextNode(This text node has a link, bold, https://www.boot.dev)"
         )
 
     def test_to_html(self):
-        text_node = TextNode("This is a text node", "text")
-        bold_node = TextNode("This is a bold node", "bold")
-        italic_node = TextNode("This is an italic node", "italic")
-        code_node = TextNode("print('Hello world')", "code")
-        link_node = TextNode("Boot.dev", "link", "https://www.boot.dev")
-        img_node = TextNode("Autism creature", "image", "https://bit.ly/4bx5bzq")
-        invalid_node = TextNode("This node shouldn't exist", "not a real text_type")
+        text_node = TextNode("This is a text node", TextNodeType.Text)
+        bold_node = TextNode("This is a bold node", TextNodeType.Bold)
+        italic_node = TextNode("This is an italic node", TextNodeType.Italic)
+        code_node = TextNode("print('Hello world')", TextNodeType.Code)
+        link_node = TextNode("Boot.dev", TextNodeType.Link, "https://www.boot.dev")
+        img_node = TextNode("Autism creature", TextNodeType.Image, "https://bit.ly/4bx5bzq")
+        invalid_node = TextNode("This node shouldn't exist", "not a real text_type") # type: ignore
 
         text_html = text_node.to_html_node().to_html()
         bold_html = bold_node.to_html_node().to_html()

@@ -1,15 +1,17 @@
 """
 Provides intermediate representation for markdown text to be converted to `HTMLNode`s
 """
+from enum import Enum
 from src.htmlnode import LeafNode
 
+TextNodeType = Enum("TextNodeType", ["Text", "Bold", "Italic", "Code", "Link", "Image"])
 
 class TextNode:
     """Class for representing markdown text and converting to `HTMLNodes`"""
     def __init__(
             self,
             text: str,
-            text_type: str,
+            text_type: TextNodeType,
             url: str | None = None
         ):
         assert isinstance(text, str)
@@ -32,16 +34,18 @@ class TextNode:
     def to_html_node(self) -> LeafNode:
         """Converts `self` into an html `LeafNode`"""
         match self.text_type:
-            case "text":
+            case TextNodeType.Text:
                 return LeafNode(None, self.text)
-            case "bold" | "italic":
-                return LeafNode(self.text_type[0], self.text)
-            case "code":
+            case TextNodeType.Bold:
+                return LeafNode("b", self.text)
+            case TextNodeType.Italic:
+                return LeafNode("i", self.text)
+            case TextNodeType.Code:
                 return LeafNode("code", self.text)
-            case "link":
+            case TextNodeType.Code:
                 props = {"href": self.url}
                 return LeafNode("a", self.text, props)
-            case "image":
+            case TextNodeType.Image:
                 props = {"src": self.url, "alt": self.text}
                 return LeafNode("img", "", props)
             case _:
