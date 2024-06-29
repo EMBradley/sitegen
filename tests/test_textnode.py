@@ -1,6 +1,9 @@
+# pylint: disable=missing-module-docstring
+# pylint: disable=missing-class-docstring
+# pylint: disable=missing-function-docstring
+
 import unittest
 from src.textnode import TextNode
-from src.htmlnode import LeafNode
 
 
 class TestTextNode(unittest.TestCase):
