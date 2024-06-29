@@ -1,5 +1,6 @@
 """
-Provides functions for converting text with inline markdown into intermediate `TextNode` representation
+Provides functions for converting text with inline markdown
+into intermediate `TextNode` representation
 """
 
 import re
