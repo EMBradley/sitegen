@@ -1,4 +1,10 @@
+"""
+Provides intermediate representation for html documents as an abstract syntax tree
+and allows converting to proper html
+"""
+
 class HTMLNode:
+    """Abstract parent class for html nodes"""
     def __init__(
             self,
             tag: str | None = None,
@@ -12,12 +18,15 @@ class HTMLNode:
         self.children = children
 
     def __repr__(self):
-        return f"HTMLNode(tag={repr(self.tag)}, value={repr(self.value)}, children={repr(self.children)}, props={repr(self.props)})"
+        return f"HTMLNode(tag={repr(self.tag)}, \
+value={repr(self.value)}, children={repr(self.children)}, props={repr(self.props)})"
 
     def to_html(self):
+        """Placeholder method to be overridden by child classes"""
         raise NotImplementedError
 
     def props_to_html(self) -> str | None:
+        """Converts `self.props` to a string for use html tag output"""
         if not self.props:
             return None
 
@@ -29,6 +38,10 @@ class HTMLNode:
         return html_props
 
 class LeafNode(HTMLNode):
+    """
+    Class for html node that has no children.
+    Note: `LeafNode`s must have a `value` attribute that is not `None`
+    """
     def __init__(
             self,
             tag: str | None,
@@ -51,6 +64,11 @@ class LeafNode(HTMLNode):
         return f"<{self.tag}{html_props}>{self.value}</{self.tag}>"
 
 class ParentNode(HTMLNode):
+    """
+    Class for html nodes that have children.
+    Note: `ParentNode`s must have a `tag` that is not `None`,
+        and a `children` list that is not `None` or empty
+    """
     def __init__(
             self,
             tag: str,
@@ -72,7 +90,7 @@ class ParentNode(HTMLNode):
 
         opening_tag = f"<{self.tag}{html_props}>"
         closing_tag = f"</{self.tag}>"
-        
+
         children = ""
         for child in self.children:
             children += child.to_html()
