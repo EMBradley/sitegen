@@ -48,7 +48,7 @@ class TestTextNode(unittest.TestCase):
         node = TextNode("This text node has a link", TextNodeType.Bold, "https://www.boot.dev")
         self.assertEqual(
             repr(node),
-            "TextNode(This text node has a link, bold, https://www.boot.dev)"
+            "TextNode(This text node has a link, TextNodeType.Bold, https://www.boot.dev)"
         )
 
     def test_to_html(self):

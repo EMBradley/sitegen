@@ -14,10 +14,6 @@ class TextNode:
             text_type: TextNodeType,
             url: str | None = None
         ):
-        assert isinstance(text, str)
-        assert isinstance(text_type, str)
-        assert url is None or isinstance(url, str)
-
         self.text = text
         self.text_type = text_type
         self.url = url
@@ -42,7 +38,7 @@ class TextNode:
                 return LeafNode("i", self.text)
             case TextNodeType.Code:
                 return LeafNode("code", self.text)
-            case TextNodeType.Code:
+            case TextNodeType.Link:
                 props = {"href": self.url}
                 return LeafNode("a", self.text, props)
             case TextNodeType.Image:
