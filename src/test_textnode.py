@@ -99,7 +99,9 @@ class TestTextNode(unittest.TestCase):
             '<img src="https://bit.ly/4bx5bzq" alt="Autism creature"></img>',
         )
 
-    def test_split_nodes(self):
+
+class TestSplitNode(unittest.TestCase):
+    def test_split_nodes_code(self):
         node_with_code_block = TextNode("This is text with a `code block` word", TextType.Normal)
         new_nodes = split_nodes([node_with_code_block], "`", TextType.Code)
         self.assertEqual(
@@ -111,6 +113,7 @@ class TestTextNode(unittest.TestCase):
             ]
         )
 
+    def test_split_nodes_bold(self):
         node_with_bold = TextNode(
             "This node has **bold text** and some **more** bold text",
             TextType.Normal
@@ -127,6 +130,7 @@ class TestTextNode(unittest.TestCase):
             ]
         )
 
+    def test_split_nodes_mixed(self):
         mixed_type = TextNode(
             "This node has a `code block`, some **bold text**, and some *italicized text*",
             TextType.Normal
@@ -146,6 +150,8 @@ class TestTextNode(unittest.TestCase):
             ]
         )
 
+
+class TestExtract(unittest.TestCase):
     def test_extract_images(self):
         text = "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and ![another](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png)" # pylint: disable=line-too-long
         self.assertEqual(
@@ -160,6 +166,27 @@ class TestTextNode(unittest.TestCase):
                     "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png" # pylint: disable=line-too-long
                 )
             ]
+        )
+
+    def test_extract_no_images(self):
+        no_images = "This is text with a [link](https://www.example.com) and [another](https://www.example.com/another)" # pylint: disable=line-too-long
+        self.assertEqual(
+            extract_markdown_images(no_images),
+            []
+        )
+
+    def test_no_extract_partial_image(self):
+        partial_image = "This text has ![alt text] without an image url and a !(url.com) with no alt text" # pylint: disable=line-too-long
+        self.assertEqual(
+            extract_markdown_images(partial_image),
+            []
+        )
+
+    def test_extract_only_image_when_link_present(self):
+        image_and_link = "This text has ![an image](https://www.test.com) and [a link](https://www.example.com)" # pylint: disable=line-too-long
+        self.assertEqual(
+            extract_markdown_images(image_and_link),
+            [("an image", "https://www.test.com")]
         )
 
     def test_extract_links(self):
@@ -178,6 +205,26 @@ class TestTextNode(unittest.TestCase):
             ]
         )
 
+    def test_extract_no_links(self):
+        no_link = "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and ![another](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png)" # pylint: disable=line-too-long
+        self.assertEqual(
+            extract_markdown_links(no_link),
+            []
+        )
+
+    def test_no_extract_partial_link(self):
+        partial_link = "This text has a [link name] and (url.com) but not together"
+        self.assertEqual(
+            extract_markdown_links(partial_link),
+            []
+        )
+
+    def test_extract_only_link_when_image_present(self):
+        image_and_link = "This text has ![an image](https://www.test.com) and [a link](https://www.example.com)" # pylint: disable=line-too-long
+        self.assertEqual(
+            extract_markdown_links(image_and_link),
+            [("a link", "https://www.example.com")]
+        )
 
 
 if __name__ == "__main__":
