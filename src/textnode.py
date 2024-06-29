@@ -3,7 +3,7 @@ Provides intermediate representation for markdown text to be converted to `HTMLN
 """
 from typing import List
 from enum import Enum
-from src.htmlnode import LeafNode
+from htmlnode import LeafNode
 
 TextType = Enum("TextNodeType", ["Normal", "Bold", "Italic", "Code", "Link", "Image"])
 

@@ -3,7 +3,7 @@
 This package was created as part of the author's completion of Boot.dev's
 backend developer course.
 """
-from .textnode import TextNode, TextType
+from textnode import TextNode, TextType
 
 
 def main():
