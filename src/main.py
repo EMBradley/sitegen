@@ -5,7 +5,6 @@ backend developer course.
 """
 
 import re
-from typing import List, Tuple
 from textnode import TextNode, TextType
 
 
@@ -16,10 +15,10 @@ def main():
 
 
 def split_nodes(
-    nodes: List[TextNode], delimiter: str, text_type: TextType
-) -> List[TextNode]:
+    nodes: list[TextNode], delimiter: str, text_type: TextType
+) -> list[TextNode]:
     """
-    Splits each of the `Text` nodes in `nodes`, and inserts nodes of type `text_type`
+    Splits each of the `TextNode`s in `nodes`, and inserts `TextNode`s of type `text_type`
     between each pair of `delimiters`
     """
     new_nodes = []
@@ -50,7 +49,7 @@ def split_nodes(
     return new_nodes
 
 
-def extract_markdown_images(text: str) -> List[Tuple[str, str]]:
+def extract_markdown_images(text: str) -> list[tuple[str, str]]:
     """
     Finds all markdown images in given text. Images are represented in markdown by strings
     of the form ![alt text](link to image). This function returns all images in the given text
@@ -59,7 +58,7 @@ def extract_markdown_images(text: str) -> List[Tuple[str, str]]:
     return re.findall(r"!\[(.*?)\]\((.*?)\)", text)
 
 
-def extract_markdown_links(text: str) -> List[Tuple[str, str]]:
+def extract_markdown_links(text: str) -> list[tuple[str, str]]:
     """
     Finds all markdown links in given text. Images are represented in markdown by strings
     of the form [link text](url). This function returns all images in the given text
