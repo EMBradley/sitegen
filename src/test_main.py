@@ -10,8 +10,37 @@ from main import (
     split_nodes,
     split_nodes_images,
     split_nodes_links,
+    text_to_textnodes,
 )
 from textnode import TextNode, TextType
+
+
+class TestConvertTextToTextNode(unittest.TestCase):
+    def test_convert_text(self):
+        text = "This is **text** with an *italic* word and a `code block` and an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and a [link](https://boot.dev)"
+        self.assertEqual(
+            text_to_textnodes(text),
+            [
+                TextNode("This is ", TextType.Normal),
+                TextNode("text", TextType.Bold),
+                TextNode(" with an ", TextType.Normal),
+                TextNode("italic", TextType.Italic),
+                TextNode(" word and a ", TextType.Normal),
+                TextNode("code block", TextType.Code),
+                TextNode(" and an ", TextType.Normal),
+                TextNode(
+                    "image",
+                    TextType.Image,
+                    "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png",
+                ),
+                TextNode(" and a ", TextType.Normal),
+                TextNode("link", TextType.Link, "https://boot.dev"),
+            ],
+        )
+
+    def test_plain_text(self):
+        text = "There is nothing special about this text"
+        self.assertEqual(text_to_textnodes(text), [TextNode(text, TextType.Normal)])
 
 
 class TestSplitNodeDelimiter(unittest.TestCase):

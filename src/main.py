@@ -14,6 +14,28 @@ def main():
     print(node)
 
 
+def text_to_textnodes(text: str) -> list[TextNode]:
+    """
+    Converts a given text to string to `TextNode` intermediate representation
+    to allow for conversion to html
+    """
+    nodes = [TextNode(text, TextType.Normal)]
+
+    delimiter_types = [
+        ("**", TextType.Bold),
+        ("*", TextType.Italic),
+        ("`", TextType.Code),
+    ]
+
+    for delimiter, text_type in delimiter_types:
+        nodes = split_nodes(nodes, delimiter, text_type)
+
+    nodes = split_nodes_links(nodes)
+    nodes = split_nodes_images(nodes)
+
+    return nodes
+
+
 def split_nodes(
     nodes: list[TextNode], delimiter: str, text_type: TextType
 ) -> list[TextNode]:
