@@ -5,7 +5,7 @@ and allows converting to proper html
 
 
 class HTMLNode:
-    """Abstract parent class for html nodes"""
+    """Abstract parent class for intermediate representation of html nodes"""
 
     def __init__(
         self,

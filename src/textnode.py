@@ -9,7 +9,7 @@ TextType = Enum("TextNodeType", ["Normal", "Bold", "Italic", "Code", "Link", "Im
 
 
 class TextNode:
-    """Class for representing markdown text and converting to `HTMLNodes`"""
+    """Class for intermediate representation of markdown text"""
 
     def __init__(self, text: str, text_type: TextType, url: str | None = None):
         self.text = text
