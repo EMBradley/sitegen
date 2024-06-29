@@ -45,5 +45,5 @@ class TextNode:
                 return LeafNode("img", "", props)
             case _:
                 raise ValueError(
-                    "TextNode.text_type must be one of text, bold, italic, code, link, or image"
+                    "TextNode.text_type must be one of Text, Bold, Italic, Code, Link, or Image"
                 )
