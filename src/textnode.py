@@ -1,3 +1,6 @@
+from src.htmlnode import LeafNode
+
+
 class TextNode:
     def __init__(
             self,
@@ -21,3 +24,20 @@ class TextNode:
 
     def __repr__(self):
         return f"TextNode({self.text}, {self.text_type}, {self.url})"
+
+    def to_html_node(self) -> LeafNode:
+        match self.text_type:
+            case "text":
+                return LeafNode(None, self.text)
+            case "bold" | "italic":
+                return LeafNode(self.text_type[0], self.text)
+            case "code":
+                return LeafNode("code", self.text)
+            case "link":
+                props = {"href": self.url}
+                return LeafNode("a", self.text, props)
+            case "image":
+                props = {"src": self.url, "alt": self.text}
+                return LeafNode("img", "", props)
+            case _:
+                raise ValueError("TextNode.text_type must be one of text, bold, italic, code, link, or image")
