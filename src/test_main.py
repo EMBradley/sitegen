@@ -4,11 +4,17 @@
 # pylint: disable=line-too-long
 
 import unittest
-from main import extract_markdown_images, extract_markdown_links, split_nodes
+from main import (
+    extract_markdown_images,
+    extract_markdown_links,
+    split_nodes,
+    split_nodes_images,
+    split_nodes_links,
+)
 from textnode import TextNode, TextType
 
 
-class TestSplitNode(unittest.TestCase):
+class TestSplitNodeDelimiter(unittest.TestCase):
     def test_split_nodes_code(self):
         node_with_code_block = TextNode(
             "This is text with a `code block` word", TextType.Normal
@@ -58,6 +64,117 @@ class TestSplitNode(unittest.TestCase):
                 TextNode("italicized text", TextType.Italic),
             ],
         )
+
+
+class TestSplitNodeImages(unittest.TestCase):
+    def test_split_images(self):
+        node = TextNode(
+            "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and another ![second image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png)",
+            TextType.Normal,
+        )
+        self.assertEqual(
+            split_nodes_images([node]),
+            [
+                TextNode("This is text with an ", TextType.Normal),
+                TextNode(
+                    "image",
+                    TextType.Image,
+                    "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png",
+                ),
+                TextNode(" and another ", TextType.Normal),
+                TextNode(
+                    "second image",
+                    TextType.Image,
+                    "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png",
+                ),
+            ],
+        )
+
+    def test_split_only_images(self):
+        node = TextNode(
+            "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and [a link](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png)",
+            TextType.Normal,
+        )
+        self.assertEqual(
+            split_nodes_images([node]),
+            [
+                TextNode("This is text with an ", TextType.Normal),
+                TextNode(
+                    "image",
+                    TextType.Image,
+                    "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png",
+                ),
+                TextNode(
+                    " and [a link](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png)",
+                    TextType.Normal,
+                ),
+            ],
+        )
+
+    def test_no_images_does_nothing(self):
+        node = TextNode(
+            "This node doesn't have any images but it does have [a link](https://www.boot.dev) and an ![incomplete image]",
+            TextType.Normal,
+        )
+        self.assertEqual(split_nodes_images([node]), [node])
+
+
+class TestSplitNodeLinks(unittest.TestCase):
+    def test_split_links(self):
+        node = TextNode(
+            "This is a text node with [a link](https://www.boot.dev) and [another link](https://www.codecademy.com)",
+            TextType.Normal,
+        )
+        self.assertEqual(
+            split_nodes_links([node]),
+            [
+                TextNode(
+                    "This is a text node with ",
+                    TextType.Normal,
+                ),
+                TextNode(
+                    "a link",
+                    TextType.Link,
+                    "https://www.boot.dev",
+                ),
+                TextNode(
+                    " and ",
+                    TextType.Normal,
+                ),
+                TextNode(
+                    "another link",
+                    TextType.Link,
+                    "https://www.codecademy.com",
+                ),
+            ],
+        )
+
+    def test_split_only_links(self):
+        node = TextNode(
+            "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and [a link](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png)",
+            TextType.Normal,
+        )
+        self.assertEqual(
+            split_nodes_links([node]),
+            [
+                TextNode(
+                    "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and ",
+                    TextType.Normal,
+                ),
+                TextNode(
+                    "a link",
+                    TextType.Link,
+                    "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/3elNhQu.png",
+                ),
+            ],
+        )
+
+    def test_no_links_does_nothing(self):
+        node = TextNode(
+            "This node has an ![image](https://example.com) but no link",
+            TextType.Normal,
+        )
+        self.assertEqual(split_nodes_links([node]), [node])
 
 
 class TestExtractImages(unittest.TestCase):

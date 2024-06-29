@@ -18,8 +18,8 @@ def split_nodes(
     nodes: list[TextNode], delimiter: str, text_type: TextType
 ) -> list[TextNode]:
     """
-    Splits each of the `TextNode`s in `nodes`, and inserts `TextNode`s of type `text_type`
-    between each pair of `delimiters`
+    Splits a list of `TextNode`s into a new list where text between a pair of `delimiters`
+    has been separated into a new node of type `text_type`
     """
     new_nodes = []
 
@@ -45,6 +45,80 @@ def split_nodes(
                 new_nodes.append(TextNode(chunk, TextType.Normal))
             else:
                 new_nodes.append(TextNode(chunk, text_type))
+
+    return new_nodes
+
+
+def split_nodes_images(nodes: list[TextNode]) -> list[TextNode]:
+    """
+    Splits a list of `TextNode`s into a new list where all markdown images embedded in
+    `TextNode`s with the `Normal` type have been extracted to separate nodes.
+    """
+    new_nodes = []
+
+    for node in nodes:
+        if node.text_type != TextType.Normal:
+            new_nodes.append(node)
+            continue
+
+        images = extract_markdown_images(node.text)
+        if not images:
+            new_nodes.append(node)
+            continue
+
+        text = node.text
+
+        for image in images:
+            chunks = text.split(f"![{image[0]}]({image[1]})", 1)
+
+            if chunks[0]:
+                normal_node = TextNode(chunks[0], TextType.Normal)
+                new_nodes.append(normal_node)
+
+            image_node = TextNode(image[0], TextType.Image, image[1])
+            new_nodes.append(image_node)
+
+            text = chunks[1]
+
+        if text:
+            new_nodes.append(TextNode(text, TextType.Normal))
+
+    return new_nodes
+
+
+def split_nodes_links(nodes: list[TextNode]) -> list[TextNode]:
+    """
+    Splits a list of `TextNode`s into a new list where all markdown links embedded in
+    `TextNode`s with the `Normal` type have been extracted to separate nodes.
+    """
+    new_nodes = []
+
+    for node in nodes:
+        if node.text_type != TextType.Normal:
+            new_nodes.append(node)
+            continue
+
+        links = extract_markdown_links(node.text)
+        if not links:
+            new_nodes.append(node)
+            continue
+
+        text = node.text
+
+        for link in links:
+            chunks = text.split(f"[{link[0]}]({link[1]})", 1)
+
+            if chunks[0]:
+                normal_node = TextNode(chunks[0], TextType.Normal)
+                new_nodes.append(normal_node)
+
+            image_node = TextNode(link[0], TextType.Link, link[1])
+            new_nodes.append(image_node)
+
+            text = chunks[1]
+
+        if text:
+            new_nodes.append(TextNode(text, TextType.Normal))
 
     return new_nodes
 
