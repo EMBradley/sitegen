@@ -1,5 +1,10 @@
 class TextNode:
-    def __init__(self, text, text_type, url=None):
+    def __init__(
+            self,
+            text: str,
+            text_type: str,
+            url: str | None = None
+        ):
         assert (isinstance(text, str))
         assert (isinstance(text_type, str))
         assert (url is None or isinstance(url, str))
