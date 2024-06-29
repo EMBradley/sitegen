@@ -3,15 +3,17 @@ Provides intermediate representation for html documents as an abstract syntax tr
 and allows converting to proper html
 """
 
+
 class HTMLNode:
     """Abstract parent class for html nodes"""
+
     def __init__(
-            self,
-            tag: str | None = None,
-            value: str | None = None,
-            props: dict | None = None,
-            children: list | None = None
-        ):
+        self,
+        tag: str | None = None,
+        value: str | None = None,
+        props: dict | None = None,
+        children: list | None = None,
+    ):
         self.tag = tag
         self.value = value
         self.props = props
@@ -32,22 +34,19 @@ value={repr(self.value)}, children={repr(self.children)}, props={repr(self.props
 
         html_props = ""
 
-        for (key, value) in self.props.items():
+        for key, value in self.props.items():
             html_props += f' {key}="{value}"'
 
         return html_props
+
 
 class LeafNode(HTMLNode):
     """
     Class for html node that has no children.
     Note: `LeafNode`s must have a `value` attribute that is not `None`
     """
-    def __init__(
-            self,
-            tag: str | None,
-            value: str,
-            props: dict | None = None
-        ):
+
+    def __init__(self, tag: str | None, value: str, props: dict | None = None):
         super().__init__(tag, value, props)
 
     def to_html(self) -> str:
@@ -63,18 +62,15 @@ class LeafNode(HTMLNode):
 
         return f"<{self.tag}{html_props}>{self.value}</{self.tag}>"
 
+
 class ParentNode(HTMLNode):
     """
     Class for html nodes that have children.
     Note: `ParentNode`s must have a `tag` that is not `None`,
         and a `children` list that is not `None` or empty
     """
-    def __init__(
-            self,
-            tag: str,
-            children: list,
-            props: dict | None = None
-        ):
+
+    def __init__(self, tag: str, children: list, props: dict | None = None):
         super().__init__(tag, value=None, children=children, props=props)
 
     def to_html(self) -> str:

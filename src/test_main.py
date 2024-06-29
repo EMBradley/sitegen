@@ -3,7 +3,6 @@
 # pylint: disable=missing-function-docstring
 
 import unittest
-
 from main import extract_markdown_images, extract_markdown_links, split_nodes
 from textnode import TextNode, TextType
 

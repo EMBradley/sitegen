@@ -3,6 +3,7 @@
 This package was created as part of the author's completion of Boot.dev's
 backend developer course.
 """
+
 import re
 from typing import List, Tuple
 from textnode import TextNode, TextType
@@ -13,7 +14,10 @@ def main():
     node = TextNode("hello world", TextType.Bold, "https://www.boot.dev")
     print(node)
 
-def split_nodes(nodes: List[TextNode], delimiter: str, text_type: TextType) -> List[TextNode]:
+
+def split_nodes(
+    nodes: List[TextNode], delimiter: str, text_type: TextType
+) -> List[TextNode]:
     """
     Splits each of the `Text` nodes in `nodes`, and inserts nodes of type `text_type`
     between each pair of `delimiters`
@@ -35,7 +39,7 @@ def split_nodes(nodes: List[TextNode], delimiter: str, text_type: TextType) -> L
         if len(chunks) % 2 == 0:
             raise ValueError("Unclosed delimiter found")
 
-        for (i, chunk) in enumerate(chunks):
+        for i, chunk in enumerate(chunks):
             if not chunk:
                 continue
             if i % 2 == 0:
@@ -43,16 +47,17 @@ def split_nodes(nodes: List[TextNode], delimiter: str, text_type: TextType) -> L
             else:
                 new_nodes.append(TextNode(chunk, text_type))
 
-
     return new_nodes
+
 
 def extract_markdown_images(text: str) -> List[Tuple[str, str]]:
     """
     Finds all markdown images in given text. Images are represented in markdown by strings
-    of the form ![alt text](link to image). This function returns all images in the given text 
+    of the form ![alt text](link to image). This function returns all images in the given text
     in the form of a list of (alt text, link) tuples.
     """
     return re.findall(r"!\[(.*?)\]\((.*?)\)", text)
+
 
 def extract_markdown_links(text: str) -> List[Tuple[str, str]]:
     """
@@ -61,6 +66,7 @@ def extract_markdown_links(text: str) -> List[Tuple[str, str]]:
     in the form of a list of (link text, url) tuples.
     """
     return re.findall(r"(?:[^!])\[(.*?)\]\((.*?)\)", text)
+
 
 if __name__ == "__main__":
     main()

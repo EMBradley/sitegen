@@ -28,11 +28,11 @@ class TestTextNode(unittest.TestCase):
         self.assertNotEqual(node1, node2)
 
     def test_ne_url(self):
-        node1 = TextNode("These have different urls", TextType.Bold, "https://www.boot.dev")
+        node1 = TextNode(
+            "These have different urls", TextType.Bold, "https://www.boot.dev"
+        )
         node2 = TextNode(
-            "These have different urls",
-            TextType.Bold,
-            "https://www.codecademy.com"
+            "These have different urls", TextType.Bold, "https://www.codecademy.com"
         )
         self.assertNotEqual(node1, node2)
 
@@ -41,14 +41,18 @@ class TestTextNode(unittest.TestCase):
         self.assertIsNone(node.url)
 
     def test_with_url(self):
-        node = TextNode("This text node has a link", TextType.Bold, "https://www.boot.dev")
+        node = TextNode(
+            "This text node has a link", TextType.Bold, "https://www.boot.dev"
+        )
         self.assertEqual(node.url, "https://www.boot.dev")
 
     def test_repr(self):
-        node = TextNode("This text node has a link", TextType.Bold, "https://www.boot.dev")
+        node = TextNode(
+            "This text node has a link", TextType.Bold, "https://www.boot.dev"
+        )
         self.assertEqual(
             repr(node),
-            "TextNode(This text node has a link, TextNodeType.Bold, https://www.boot.dev)"
+            "TextNode(This text node has a link, TextNodeType.Bold, https://www.boot.dev)",
         )
 
     def test_to_html(self):
@@ -58,7 +62,7 @@ class TestTextNode(unittest.TestCase):
         code_node = TextNode("print('Hello world')", TextType.Code)
         link_node = TextNode("Boot.dev", TextType.Link, "https://www.boot.dev")
         img_node = TextNode("Autism creature", TextType.Image, "https://bit.ly/4bx5bzq")
-        invalid_node = TextNode("This node shouldn't exist", "not a real text_type") # type: ignore
+        invalid_node = TextNode("This node shouldn't exist", "not a real text_type")  # type: ignore
 
         text_html = text_node.to_html_node().to_html()
         bold_html = bold_node.to_html_node().to_html()
@@ -68,22 +72,10 @@ class TestTextNode(unittest.TestCase):
         img_html = img_node.to_html_node().to_html()
 
         self.assertRaises(ValueError, invalid_node.to_html_node)
-        self.assertEqual(
-            text_html,
-            "This is a text node"
-        )
-        self.assertEqual(
-            bold_html,
-            "<b>This is a bold node</b>"
-        )
-        self.assertEqual(
-            italic_html,
-            "<i>This is an italic node</i>"
-        )
-        self.assertEqual(
-            code_html,
-            "<code>print('Hello world')</code>"
-        )
+        self.assertEqual(text_html, "This is a text node")
+        self.assertEqual(bold_html, "<b>This is a bold node</b>")
+        self.assertEqual(italic_html, "<i>This is an italic node</i>")
+        self.assertEqual(code_html, "<code>print('Hello world')</code>")
         self.assertEqual(
             link_html,
             '<a href="https://www.boot.dev">Boot.dev</a>',

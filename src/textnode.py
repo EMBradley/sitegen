@@ -1,28 +1,27 @@
 """
 Provides intermediate representation for markdown text to be converted to `HTMLNode`s
 """
+
 from enum import Enum
 from htmlnode import LeafNode
 
 TextType = Enum("TextNodeType", ["Normal", "Bold", "Italic", "Code", "Link", "Image"])
 
+
 class TextNode:
     """Class for representing markdown text and converting to `HTMLNodes`"""
-    def __init__(
-            self,
-            text: str,
-            text_type: TextType,
-            url: str | None = None
-        ):
+
+    def __init__(self, text: str, text_type: TextType, url: str | None = None):
         self.text = text
         self.text_type = text_type
         self.url = url
 
     def __eq__(self, other):
         return (
-            self.text == other.text and
-            self.text_type == other.text_type and
-            self.url == other.url)
+            self.text == other.text
+            and self.text_type == other.text_type
+            and self.url == other.url
+        )
 
     def __repr__(self):
         return f"TextNode({self.text}, {self.text_type}, {self.url})"
