@@ -1,5 +1,5 @@
 import unittest
-from src.htmlnode import HTMLNode
+from src.htmlnode import HTMLNode, LeafNode
 
 class TestHTMLNode(unittest.TestCase):
     def test_repr(self):
@@ -23,6 +23,22 @@ class TestHTMLNode(unittest.TestCase):
             ' href="https://www.boot.dev" target="_blank"'
         )
 
+
+class TestLeafNode(unittest.TestCase):
+    def test_no_value(self):
+        node = LeafNode()
+        self.assertRaises(ValueError, node.to_html)
+
+    def test_no_tag(self):
+        node = LeafNode(None, "this node has no tag")
+        self.assertEqual(node.to_html(), "this node has no tag")
+
+    def test_with_tag(self):
+        node1 = LeafNode("p", "This is a paragraph of text.")
+        node2 = LeafNode("a", "Click me!", {"href": "https://www.google.com"})
+
+        self.assertEqual(node1.to_html(), "<p>This is a paragraph of text.</p>")
+        self.assertEqual(node2.to_html(), '<a href="https://www.google.com">Click me!</a>')
 
 
 if __name__ == "__main__":
