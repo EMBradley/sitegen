@@ -164,12 +164,10 @@ class TestParentNode(unittest.TestCase):
 
         self.assertEqual(
             node.to_html(),
-            "<p><b>Bold text</b><ol><li>a numbered list item</li>\
-<li>a second list item</li><li><i>an italicized list item</i></li>\
-</ol>Normal text<i>italic text</i><ul><li>a bullet point</li>\
-<li>another bullet point</li></ul>Normal text</p>"
+            "<p><b>Bold text</b><ol><li>a numbered list item</li><li>a second list item</li>\
+<li><i>an italicized list item</i></li></ol>Normal text<i>italic text</i><ul>\
+<li>a bullet point</li><li>another bullet point</li></ul>Normal text</p>"
         )
-
 
 
 if __name__ == "__main__":
