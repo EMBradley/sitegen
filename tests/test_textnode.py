@@ -53,11 +53,7 @@ class TestTextNode(unittest.TestCase):
         italic_node = TextNode("This is an italic node", "italic")
         code_node = TextNode("print('Hello world')", "code")
         link_node = TextNode("Boot.dev", "link", "https://www.boot.dev")
-        img_node = TextNode(
-            "Autism creature",
-            "image",
-            "https://img.freepik.com/premium-vector/autism-tbh-creature-meme-kids-meme-autistic-among-us-mascot-autism-awareness-funny_687076-75.jpg?w=740"
-        )
+        img_node = TextNode("Autism creature", "image", "https://bit.ly/4bx5bzq")
         invalid_node = TextNode("This node shouldn't exist", "not a real text_type")
 
         text_html = text_node.to_html_node().to_html()
@@ -90,9 +86,7 @@ class TestTextNode(unittest.TestCase):
         )
         self.assertEqual(
             img_html,
-            '<img \
-src="https://img.freepik.com/premium-vector/autism-tbh-creature-meme-kids-meme-autistic-among-us-mascot-autism-awareness-funny_687076-75.jpg?w=740" \
-alt="Autism creature"></img>',
+            '<img src="https://bit.ly/4bx5bzq" alt="Autism creature"></img>',
         )
 
 
