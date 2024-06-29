@@ -1,7 +1,8 @@
 """
 Provides intermediate representation for markdown text to be converted to `HTMLNode`s
 """
-from typing import List
+import re
+from typing import List, Tuple
 from enum import Enum
 from htmlnode import LeafNode
 
@@ -82,3 +83,19 @@ def split_nodes(nodes: List[TextNode], delimiter: str, text_type: TextType) -> L
 
 
     return new_nodes
+
+def extract_markdown_images(text: str) -> List[Tuple[str, str]]:
+    """
+    Finds all markdown images in given text. Images are represented in markdown by strings
+    of the form ![alt text](link to image). This function returns all images in the given text 
+    in the form of a list of (alt text, link) tuples.
+    """
+    return re.findall(r"!\[(.*?)\]\((.*?)\)", text)
+
+def extract_markdown_links(text: str) -> List[Tuple[str, str]]:
+    """
+    Finds all markdown links in given text. Images are represented in markdown by strings
+    of the form [link text](url). This function returns all images in the given text
+    in the form of a list of (link text, url) tuples.
+    """
+    return re.findall(r"\[(.*?)\]\((.*?)\)", text)

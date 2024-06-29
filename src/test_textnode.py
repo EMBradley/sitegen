@@ -3,7 +3,13 @@
 # pylint: disable=missing-function-docstring
 
 import unittest
-from textnode import TextNode, TextType, split_nodes
+from textnode import (
+        TextNode,
+        TextType,
+        extract_markdown_images,
+        extract_markdown_links,
+        split_nodes
+)
 
 
 class TestTextNode(unittest.TestCase):
@@ -137,6 +143,38 @@ class TestTextNode(unittest.TestCase):
                 TextNode("bold text", TextType.Bold),
                 TextNode(", and some ", TextType.Normal),
                 TextNode("italicized text", TextType.Italic)
+            ]
+        )
+
+    def test_extract_images(self):
+        text = "This is text with an ![image](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png) and ![another](https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png)" # pylint: disable=line-too-long
+        self.assertEqual(
+            extract_markdown_images(text),
+            [
+                (
+                    "image",
+                    "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/zjjcJKZ.png" # pylint: disable=line-too-long
+                ),
+                (
+                    "another",
+                    "https://storage.googleapis.com/qvault-webapp-dynamic-assets/course_assets/dfsdkjfd.png" # pylint: disable=line-too-long
+                )
+            ]
+        )
+
+    def test_extract_links(self):
+        text = "This is text with a [link](https://www.example.com) and [another](https://www.example.com/another)" # pylint: disable=line-too-long
+        self.assertEqual(
+            extract_markdown_links(text),
+            [
+                (
+                    "link",
+                    "https://www.example.com"
+                ),
+                (
+                    "another",
+                    "https://www.example.com/another"
+                )
             ]
         )
 
