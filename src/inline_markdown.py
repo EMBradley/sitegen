@@ -16,18 +16,18 @@ def text_to_textnodes(text: str) -> list[TextNode]:
     nodes = [TextNode(text, TextType.Normal)]
 
     delimiter_types = [
+        ("`", TextType.Code),
         ("**", TextType.Bold),
         ("__", TextType.Bold),
         ("*", TextType.Italic),
         ("_", TextType.Italic),
-        ("`", TextType.Code),
     ]
-
-    for delimiter, text_type in delimiter_types:
-        nodes = split_nodes(nodes, delimiter, text_type)
 
     nodes = split_nodes_links(nodes)
     nodes = split_nodes_images(nodes)
+
+    for delimiter, text_type in delimiter_types:
+        nodes = split_nodes(nodes, delimiter, text_type)
 
     return nodes
 
