@@ -151,4 +151,4 @@ def extract_markdown_links(text: str) -> list[tuple[str, str]]:
     of the form [link text](url). This function returns all images in the given text
     in the form of a list of (link text, url) tuples.
     """
-    return re.findall(r"(?:[^!])\[(.*?)\]\((.*?)\)", text)
+    return re.findall(r"(?:^|[^!])\[(.*?)\]\((.*?)\)", text)
