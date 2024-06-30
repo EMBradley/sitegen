@@ -13,8 +13,30 @@ from markdown_blocks import extract_title, markdown_to_html_node
 
 def main():
     """Entry point for `sitegen`"""
+    print("Generating pages...")
     copy_static()
-    generate_page("content/index.md", "public/index.html", "template.html")
+    generate_pages_recursive("content", "public", "template.html")
+    print("Complete!")
+
+
+def generate_pages_recursive(
+    content_dir_path: str, dst_dir_path: str, template_path: str
+):
+    """
+    Recursively walks through the directory at `content_dir_path`, generating an html file
+    from each markdown file it finds, and places them all in `dst_dir_path`
+    """
+    assert path.exists(content_dir_path)
+
+    for item in listdir(content_dir_path):
+        item_path = path.join(content_dir_path, item)
+        dst_path = path.join(dst_dir_path, item)
+        if path.isfile(item_path):
+            if item_path.endswith(".md"):
+                dst_path = dst_path.replace(".md", ".html")
+                generate_page(item_path, dst_path, template_path)
+        else:
+            generate_pages_recursive(item_path, dst_path, template_path)
 
 
 def generate_page(src_path: str, dst_path: str, template_path: str):
@@ -39,8 +61,6 @@ def generate_page(src_path: str, dst_path: str, template_path: str):
 
     with open(dst_path, "w") as dst_file:
         dst_file.write(result)
-
-    print("Page generation complete")
 
 
 def copy_static():
