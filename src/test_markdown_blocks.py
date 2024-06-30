@@ -5,7 +5,13 @@
 
 import unittest
 
-from markdown_blocks import BlockType, get_block_type, markdown_to_blocks
+from htmlnode import LeafNode, ParentNode
+from markdown_blocks import (
+    BlockType,
+    get_block_type,
+    markdown_to_blocks,
+    markdown_to_html_node,
+)
 
 
 class TestBlockMarkdown(unittest.TestCase):
@@ -99,6 +105,96 @@ Some of those lines have extra whitespace"""
         for block_type, blocks in blocks:
             for block in blocks:
                 self.assertEqual(get_block_type(block.strip()), block_type)
+
+    def test_markdown_to_html_node(self):
+        markdown = """
+# Heading 1
+
+## Heading 2
+
+### Heading 3
+
+#### Heading 4
+
+##### Heading 5
+
+###### Heading 6
+
+```
+print("Hello world")
+```
+
+> We are the hollow men
+> We are the stuffed men
+> Leaning together
+> Headpiece filled with straw. Alas!
+
+* bullet
+* points
+
+* more
+- bullet
+- points
+
+1. a
+2. list
+3. in
+4. order
+
+a paragraph of normal text
+        """
+
+        html_node = ParentNode(
+            "div",
+            [
+                ParentNode("h1", [LeafNode(None, "Heading 1")]),
+                ParentNode("h2", [LeafNode(None, "Heading 2")]),
+                ParentNode("h3", [LeafNode(None, "Heading 3")]),
+                ParentNode("h4", [LeafNode(None, "Heading 4")]),
+                ParentNode("h5", [LeafNode(None, "Heading 5")]),
+                ParentNode("h6", [LeafNode(None, "Heading 6")]),
+                ParentNode(
+                    "pre",
+                    [ParentNode("code", [LeafNode(None, 'print("Hello world")')])],
+                ),
+                ParentNode(
+                    "blockquote",
+                    [
+                        LeafNode(
+                            None,
+                            "We are the hollow men\nWe are the stuffed men\nLeaning together\nHeadpiece filled with straw. Alas!",
+                        )
+                    ],
+                ),
+                ParentNode(
+                    "ul",
+                    [
+                        ParentNode("li", [LeafNode(None, "bullet")]),
+                        ParentNode("li", [LeafNode(None, "points")]),
+                    ],
+                ),
+                ParentNode(
+                    "ul",
+                    [
+                        ParentNode("li", [LeafNode(None, "more")]),
+                        ParentNode("li", [LeafNode(None, "bullet")]),
+                        ParentNode("li", [LeafNode(None, "points")]),
+                    ],
+                ),
+                ParentNode(
+                    "ol",
+                    [
+                        ParentNode("li", [LeafNode(None, "a")]),
+                        ParentNode("li", [LeafNode(None, "list")]),
+                        ParentNode("li", [LeafNode(None, "in")]),
+                        ParentNode("li", [LeafNode(None, "order")]),
+                    ],
+                ),
+                ParentNode("p", [LeafNode(None, "a paragraph of normal text")]),
+            ],
+        )
+
+        self.assertEqual(markdown_to_html_node(markdown).to_html(), html_node.to_html())
 
 
 if __name__ == "__main__":

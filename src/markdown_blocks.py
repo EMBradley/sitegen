@@ -36,9 +36,9 @@ def markdown_to_html_node(markdown: str) -> ParentNode:
                 node = ParentNode(f"h{len(hashes)}", text_to_leaf_nodes(content))
 
             case BlockType.Code:
-                content = block[3:-3]
+                content = block[3:-3].strip()
                 node = ParentNode(
-                    "per", [ParentNode("code", text_to_leaf_nodes(content))]
+                    "pre", [ParentNode("code", text_to_leaf_nodes(content))]
                 )
 
             case BlockType.Quote:
