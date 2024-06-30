@@ -4,14 +4,10 @@
 # pylint: disable=line-too-long
 
 import unittest
-from inline_markdown import (
-    extract_markdown_images,
-    extract_markdown_links,
-    split_nodes,
-    split_nodes_images,
-    split_nodes_links,
-    text_to_textnodes,
-)
+
+from inline_markdown import (extract_markdown_images, extract_markdown_links,
+                             split_nodes, split_nodes_images,
+                             split_nodes_links, text_to_textnodes)
 from textnode import TextNode, TextType
 
 

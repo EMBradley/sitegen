@@ -4,6 +4,7 @@
 # pylint: disable=line-too-long
 
 import unittest
+
 from htmlnode import HTMLNode, LeafNode, ParentNode
 
 

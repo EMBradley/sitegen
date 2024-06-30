@@ -6,12 +6,8 @@
 import unittest
 
 from htmlnode import LeafNode, ParentNode
-from markdown_blocks import (
-    BlockType,
-    get_block_type,
-    markdown_to_blocks,
-    markdown_to_html_node,
-)
+from markdown_blocks import (BlockType, get_block_type, markdown_to_blocks,
+                             markdown_to_html_node)
 
 
 class TestBlockMarkdown(unittest.TestCase):

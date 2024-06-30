@@ -3,6 +3,7 @@
 # pylint: disable=missing-function-docstring
 
 import unittest
+
 from textnode import TextNode, TextType
 
 
