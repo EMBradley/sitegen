@@ -14,6 +14,17 @@ BlockType = Enum(
 )
 
 
+def extract_title(markdown: str) -> str:
+    """Gets the title of a markdown page"""
+    blocks = markdown_to_blocks(markdown)
+
+    for block in blocks:
+        if block.startswith("# "):
+            return block[2:]
+
+    raise ValueError("Page must have a title (h1 heading)")
+
+
 def markdown_to_html_node(markdown: str) -> ParentNode:
     """
     Converts a `str` representing a markdown document
