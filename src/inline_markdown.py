@@ -4,6 +4,7 @@ into intermediate `TextNode` representation
 """
 
 import re
+
 from textnode import TextNode, TextType
 
 
@@ -16,7 +17,9 @@ def text_to_textnodes(text: str) -> list[TextNode]:
 
     delimiter_types = [
         ("**", TextType.Bold),
+        ("__", TextType.Bold),
         ("*", TextType.Italic),
+        ("_", TextType.Italic),
         ("`", TextType.Code),
     ]
 
@@ -47,11 +50,6 @@ def split_nodes(
             continue
 
         chunks = node.text.split(delimiter)
-
-        # an even number of delimiters splits the text into an odd number of chunks,
-        # so if there are an even number of chunks then there are mismatched delimiters
-        if len(chunks) % 2 == 0:
-            raise ValueError("Unclosed delimiter found")
 
         for i, chunk in enumerate(chunks):
             if not chunk:
